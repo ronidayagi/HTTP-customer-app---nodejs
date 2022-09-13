@@ -1,0 +1,27 @@
+const { Configuration, OpenAIApi } = require("openai");
+
+const configuration = new Configuration({
+  apiKey: "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",
+});
+const openai = new OpenAIApi(configuration);
+
+const response = openai.createCompletion({
+  model: "text-davinci-002",
+  prompt: "Write more than 3 positive sentiment ads for the following software product and rate the ads from the best to lowest:\n\nProduct: Microsoft Office.",
+  temperature: 0.5,
+  max_tokens: 60,
+  top_p: 1.0,
+  frequency_penalty: 0.0,
+  presence_penalty: 0.0,
+});
+
+response.then(d=>
+	{
+		for (let i = 0; i < d.data.choices.length; i++)
+      if (i < 3) // In some cases OpenAI returns only 3 answers. as I wanted to keep my request 'Write more than 3..', I added if case
+			  console.log(d.data.choices[i].text);
+      else
+        break
+	}
+);
+
